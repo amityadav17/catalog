@@ -14,6 +14,19 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # parentDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # print(parentDir)
 
+import os
+ON_HEROKU = os.environ.get('ON_HEROKU')
+
+if ON_HEROKU:
+    # get the heroku port
+    port = int(os.environ.get('PORT', 17995))  # as per OP comments default is 17995
+    print(port)
+else:
+    port = 3000
+
+print(port)
+print(os.environ.get('ON_HEROKU'))
+
 from wsgiref import simple_server
 from libservice.base.service import falcon_app
 import json

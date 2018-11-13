@@ -9,6 +9,7 @@ import json
 # )
 #
 # print(mydb)
+print("TRYING TO ESTABLISH CONNECTION WITH DATABASE ...")
 
 mydb = mysql.connector.connect(
     host="us-cdbr-iron-east-01.cleardb.net",
@@ -19,6 +20,8 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
+print(mydb)
+print("SERVER RUNNING..")
 # try:
 #     mycursor.execute("CREATE DATABASE IF NOT EXISTS Catalog")
 # except ConnectionError:

@@ -5,7 +5,7 @@
     "url": "/admin/session",
     "title": "Admin session management",
     "name": "Admin_session_management",
-    "description": "<p>Create a admin session</p>",
+    "description": "<p>Create a admin session. Session is valid for 24 hrs</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -1212,7 +1212,7 @@
     "url": "/session",
     "title": "User session management",
     "name": "User_session_management",
-    "description": "<p>Create a User session</p>",
+    "description": "<p>Create a User session. If email and password are both empty then user will be logged in as guest and if not they will be logged in as user. Session is valid for 24 hrs</p>",
     "parameter": {
       "fields": {
         "Parameter": [

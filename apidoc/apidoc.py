@@ -215,7 +215,7 @@
 @apiGroup USER
 @api {post} /session User session management
 @apiName User session management
-@apiDescription Create a User session
+@apiDescription Create a User session. If email and password are both empty then user will be logged in as guest and if not they will be logged in as user. Session is valid for 24 hrs
 
 @apiParam {String} email The email address associated with the user’s account.
 @apiParam {String} password The password associated with the user’s account.
@@ -282,7 +282,7 @@
 @apiGroup ADMIN
 @api {post} /admin/session Admin session management
 @apiName Admin session management
-@apiDescription Create a admin session
+@apiDescription Create a admin session. Session is valid for 24 hrs
 
 @apiParam {String} email The email address associated with the user’s account.
 @apiParam {String} password The password associated with the user’s account.

@@ -15,17 +15,18 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # print(parentDir)
 
 import os
-ON_HEROKU = os.environ.get('ON_HEROKU')
-
-if ON_HEROKU:
-    # get the heroku port
-    port = int(os.environ.get('PORT', 17995))  # as per OP comments default is 17995
-    print(port)
-else:
-    port = 3000
-
-print(port)
-print(os.environ.get('ON_HEROKU'))
+# ON_HEROKU = os.environ.get('ON_HEROKU')
+#
+# if ON_HEROKU:
+#     # get the heroku port
+#     port = int(os.environ.get('PORT', 17995))  # as per OP comments default is 17995
+#     print(port)
+# else:
+#     port = 3000
+#
+# print(port)
+# print(os.environ.get('ON_HEROKU'))
+port = int(os.environ.get("PORT", 8000))
 
 from wsgiref import simple_server
 from libservice.base.service import falcon_app
@@ -69,5 +70,5 @@ falcon_app.add_route('/content/list', ContentListResource())
 falcon_app.add_route('/content/list/{content_item_id}', ContentListResource())
 
 if __name__ == '__main__':
-    httpd = simple_server.make_server('0.0.0.0', 8000, falcon_app)
+    httpd = simple_server.make_server('0.0.0.0', port, falcon_app)
     httpd.serve_forever()

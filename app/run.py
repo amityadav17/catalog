@@ -1,3 +1,19 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# sys.path.append('../')
+# sys.path.append('../../')
+
+# sys.path.remove('/home/woi/Workspace/Heroku/app/catalog/app')
+# sys.path.append('/home/woi/Workspace/Heroku/app/catalog/app')
+
+# absFilePath = os.path.abspath(__file__)
+# print(absFilePath)
+# fileDir = os.path.dirname(os.path.abspath(__file__))
+# print(fileDir)
+# parentDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# print(parentDir)
+
 from wsgiref import simple_server
 from libservice.base.service import falcon_app
 import json
@@ -7,10 +23,26 @@ from account.api.session import SessionResource
 from content.api.content_list import ContentListResource
 from admin.api.admin_user import AdminResource
 from admin.api.admin_session import AdminSessionResource
+from libservice.base.meta_info import MetaResource
+
+
+test_input_body = {
+    "type": "object",
+    "properties": {
+    }
+}
 
 
 class Test(object):
+    def __init__(self):
+        MetaResource.add_meta_resource('Test', 'GET', test_input_body)
+        MetaResource.add_meta_resource('Test', 'POST', test_input_body)
+
     def on_get(self, res, resp):
+        # print("Success")
+        resp.body = json.dumps({"Success": "Test"})
+
+    def on_post(self, res, resp):
         # print("Success")
         resp.body = json.dumps({"Success": "Test"})
 

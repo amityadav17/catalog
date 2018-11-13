@@ -1,17 +1,24 @@
 import mysql.connector
 import json
 
-
 # mydb = mysql.connector.connect(
-#   host="localhost",
-#   user="root",
-#   passwd="root"
+#     host="localhost",
+#     user="root",
+#     passwd="root",
+#     database="Catalog"
 # )
 #
 # print(mydb)
-#
-# mycursor = mydb.cursor()
-#
+
+mydb = mysql.connector.connect(
+    host="us-cdbr-iron-east-01.cleardb.net",
+    user="ba43d168154dda",
+    passwd="d69973df",
+    database="heroku_bb50e8745b9a860"
+)
+
+mycursor = mydb.cursor()
+
 # try:
 #     mycursor.execute("CREATE DATABASE IF NOT EXISTS Catalog")
 # except ConnectionError:
@@ -21,27 +28,6 @@ import json
 #
 # for x in mycursor:
 #     print(x)
-
-mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="root",
-    database="Catalog"
-)
-
-print(mydb)
-
-mycursor = mydb.cursor()
-
-try:
-    mycursor.execute("CREATE DATABASE IF NOT EXISTS Catalog")
-except ConnectionError:
-    print("Error : ")
-
-mycursor.execute("SHOW DATABASES")
-
-for x in mycursor:
-    print(x)
 
 ##############################CRETE TABLE TEST for connection testing #####################################################
 

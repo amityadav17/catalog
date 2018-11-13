@@ -22,21 +22,27 @@ import json
 # for x in mycursor:
 #     print(x)
 
+# mydb = mysql.connector.connect(
+#     host="localhost",
+#     user="root",
+#     passwd="root",
+#     database="Catalog"
+# )
 mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="root",
-    database="Catalog"
+    host="us-cdbr-iron-east-01.cleardb.net",
+    user="ba43d168154dda",
+    passwd="d69973df",
+    database="heroku_bb50e8745b9a860"
 )
 
 print(mydb)
 
 mycursor = mydb.cursor()
 
-try:
-    mycursor.execute("CREATE DATABASE IF NOT EXISTS Catalog")
-except ConnectionError:
-    print("Error : ")
+# try:
+#     mycursor.execute("CREATE DATABASE IF NOT EXISTS Catalog")
+# except ConnectionError:
+#     print("Error : ")
 
 mycursor.execute("SHOW DATABASES")
 
@@ -86,9 +92,9 @@ mycursor.execute("CREATE TABLE content ("
 #                  "imdb_score    VARCHAR(10),"
 #                  "PRIMARY KEY ( content_id )"
 #                  ");")
-#
-#
-#
+
+
+
 with open('imdb.json') as f:
     data = json.load(f)
 
@@ -112,6 +118,7 @@ for contents in data:
 # mycursor.execute("DROP TABLE admin_auth")
 # mycursor.execute("DROP TABLE archive_admin")
 #
+
 mycursor.execute("CREATE TABLE user_info ("
                  "uuid    VARCHAR(128),"
                  "firstname  VARCHAR(128),"
@@ -168,4 +175,5 @@ mycursor.execute("ALTER TABLE user_info ADD PRIMARY KEY( uuid);")
 mycursor.execute("ALTER TABLE admin_info ADD PRIMARY KEY(uuid);")
 mycursor.execute("ALTER TABLE user_auth ADD PRIMARY KEY( uuid);")
 mycursor.execute("ALTER TABLE admin_auth ADD PRIMARY KEY(uuid);")
+mycursor.execute("ALTER TABLE content ENGINE = MyISAM")
 mycursor.execute("ALTER TABLE content ADD FULLTEXT(title, director, genre)")

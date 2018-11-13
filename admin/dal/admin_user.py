@@ -1,6 +1,6 @@
 from datetime import datetime
-from libservice.db.db import mycursor, mydb
 from libservice.base.entity import Entity
+from libservice.db.db import db_object
 
 
 class FacadeAdmin:
@@ -26,14 +26,14 @@ class FacadeAdmin:
         # Make sure all pending values are initialized
         entity.replace_all_none_by_empty()
 
-        mycursor.execute(FacadeAdmin.REQUEST_INSERT_ADMIN_USER_AUTH, (entity['uuid'],
+        db_object.query(FacadeAdmin.REQUEST_INSERT_ADMIN_USER_AUTH, (entity['uuid'],
                                                                      entity['login'],
                                                                      entity['password'],))
-        mycursor.execute(FacadeAdmin.REQUEST_INSERT_ADMIN_USER_INFO, (entity['uuid'],
+        db_object.query(FacadeAdmin.REQUEST_INSERT_ADMIN_USER_INFO, (entity['uuid'],
                                                                      entity['firstname'],
                                                                      entity['lastname'],
                                                                      entity['email'],))
-        mydb.commit()
+        db_object.commit_query()
 
     #########################################################################################################
 
@@ -50,9 +50,10 @@ class FacadeAdmin:
         :return: False if not found.
         """
 
-        mycursor.execute(FacadeAdmin.REQUEST_EXIST_ADMIN_USER_BY_LOGIN, (login,))
+        cursor = db_object.query(FacadeAdmin.REQUEST_EXIST_ADMIN_USER_BY_LOGIN, (login,))
 
-        result_set = mycursor.fetchall()
+        result_set = cursor.fetchall()
+        db_object.commit_query()
         return result_set
 
     ####################################################################################################
@@ -78,8 +79,8 @@ class FacadeAdmin:
                     lastname: The last name of the user [String]
         """
 
-        mycursor.execute(FacadeAdmin.REQUEST_GET_ADMIN_USER_BY_LOGIN, (login,))
-        result_set = mycursor.fetchall()
+        cursor = db_object.query(FacadeAdmin.REQUEST_GET_ADMIN_USER_BY_LOGIN, (login,))
+        result_set = cursor.fetchall()
 
         if result_set:
             return Entity({'login': result_set[0][0],

@@ -11,17 +11,70 @@ import json
 # print(mydb)
 print("TRYING TO ESTABLISH CONNECTION WITH DATABASE ...")
 
-mydb = mysql.connector.connect(
-    host="us-cdbr-iron-east-01.cleardb.net",
-    user="ba43d168154dda",
-    passwd="d69973df",
-    database="heroku_bb50e8745b9a860"
-)
+# mydb = mysql.connector.connect(
+#     host="us-cdbr-iron-east-01.cleardb.net",
+#     user="ba43d168154dda",
+#     passwd="d69973df",
+#     database="heroku_bb50e8745b9a860"
+# )
+#
+# mycursor = mydb.cursor()
+#
+# print(mydb)
 
-mycursor = mydb.cursor()
+# -----------------------------------------------------------------
 
-print(mydb)
+
+class DatabaseResource:
+    conn = None
+
+    def connect(self):
+        self.conn = mysql.connector.connect(
+            host="us-cdbr-iron-east-01.cleardb.net",
+            user="ba43d168154dda",
+            passwd="d69973df",
+            database="heroku_bb50e8745b9a860"
+        )
+
+    def query(self, sql, value=None):
+        try:
+            cursor = self.conn.cursor()
+            if value is None:
+                cursor.execute(sql)
+            else:
+                cursor.execute(sql,value)
+        except (AttributeError, mysql.connector.OperationalError):
+            self.connect()
+            cursor = self.conn.cursor()
+            if value is None:
+                cursor.execute(sql)
+            else:
+                cursor.execute(sql,value)
+
+        return cursor
+
+    def commit_query(self):
+        self.conn.commit()
+
+
+db_object = DatabaseResource()
+
 print("SERVER RUNNING..")
+
+
+# db = DB()
+# sql = "SELECT * FROM foo"
+# cur = db.query(sql)
+# # wait a long time for the Mysql connection to timeout
+# cur = db.query(sql)
+# # still works
+
+# -----------------------------------------------------------
+
+
+
+
+
 # try:
 #     mycursor.execute("CREATE DATABASE IF NOT EXISTS Catalog")
 # except ConnectionError:

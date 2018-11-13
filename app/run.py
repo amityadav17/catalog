@@ -27,6 +27,7 @@ import os
 # print(port)
 # print(os.environ.get('ON_HEROKU'))
 port = int(os.environ.get("PORT", 8000))
+print(port)
 
 from wsgiref import simple_server
 from libservice.base.service import falcon_app
@@ -38,6 +39,7 @@ from content.api.content_list import ContentListResource
 from admin.api.admin_user import AdminResource
 from admin.api.admin_session import AdminSessionResource
 from libservice.base.meta_info import MetaResource
+# from libservice.db.db import DatabaseResource
 
 
 test_input_body = {
@@ -60,6 +62,8 @@ class Test(object):
         # print("Success")
         resp.body = json.dumps({"Success": "Test"})
 
+
+# DatabaseResource()
 
 falcon_app.add_route('/test', Test())
 falcon_app.add_route('/user', UserResource())

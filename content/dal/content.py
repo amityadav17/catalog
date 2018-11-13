@@ -1,4 +1,4 @@
-from libservice.db.db import mycursor, mydb
+from libservice.db.db import db_object
 from libservice.base.entity import Entity
 import json
 
@@ -20,10 +20,10 @@ class FacadeContent:
         if search is not None:
             query += " WHERE MATCH(title, genre, director) AGAINST('"+search+"*' IN BOOLEAN MODE ) "
 
-        mycursor.execute(query)
+        cursor = db_object.query(query)
         my_list = {}
 
-        result_set = mycursor.fetchall()
+        result_set = cursor.fetchall()
 
         for content in result_set:
 
@@ -48,12 +48,12 @@ class FacadeContent:
         # Make sure all pending values are initialized
         entity.replace_all_none_by_empty()
 
-        mycursor.execute(FacadeContent.REQUEST_INSERT_CONTENT_LIST, (entity['title'],
-                                                                     float(entity['popularity']),
-                                                                     entity['director'],
-                                                                     json.dumps(entity['genre']),
-                                                                     float(entity['imdb_score']),))
-        mydb.commit()
+        db_object.query(FacadeContent.REQUEST_INSERT_CONTENT_LIST, (entity['title'],
+                                                                    entity['popularity'],
+                                                                    entity['director'],
+                                                                    json.dumps(entity['genre']),
+                                                                    entity['imdb_score'],))
+        db_object.commit_query()
 
 
 ###########################################################################################
@@ -71,8 +71,8 @@ class FacadeContent:
         :return: False if not found.
         """
 
-        mycursor.execute(FacadeContent.REQUEST_EXIST_CONTENT_ITEM, (int(content_item_id),))
-        result_set = mycursor.fetchall()
+        cursor = db_object.query(FacadeContent.REQUEST_EXIST_CONTENT_ITEM, (int(content_item_id),))
+        result_set = cursor.fetchall()
         return result_set
 
     #######################################################################################
@@ -90,10 +90,9 @@ class FacadeContent:
         :return: False if not deleted.
         """
 
-        mycursor.execute(FacadeContent.REQUEST_DELETE_CONTENT_ITEM,(int(content_item_id),))
+        db_object.query(FacadeContent.REQUEST_DELETE_CONTENT_ITEM,(int(content_item_id),))
 
     #######################################################################################
-
 
     # Define the requests for the following function(s)
     REQUEST_UPDATE_CONTENT_ITEM = """UPDATE content SET title = %s, popularity = %s, director = %s, genre = %s, 
@@ -110,12 +109,12 @@ class FacadeContent:
         :return: False if not deleted.
         """
 
-        mycursor.execute(FacadeContent.REQUEST_UPDATE_CONTENT_ITEM, (entity['title'],
-                                                                     entity['popularity'],
-                                                                     entity['director'],
-                                                                     json.dumps(entity['genre']),
-                                                                     entity['imdb_score'],
-                                                                     int(content_item_id),))
+        db_object.query(FacadeContent.REQUEST_UPDATE_CONTENT_ITEM, (entity['title'],
+                                                                    entity['popularity'],
+                                                                    entity['director'],
+                                                                    json.dumps(entity['genre']),
+                                                                    entity['imdb_score'],
+                                                                    int(content_item_id),))
 
     #######################################################################################
 
@@ -131,9 +130,10 @@ class FacadeContent:
         :param content_item_id: The content item id to update [String, Required]
         :return: Entity of content item information.
         """
-        mycursor.execute(FacadeContent.REQUEST_GET_CONTENT_ITEM, (content_item_id,))
 
-        result_set = mycursor.fetchall()
+        cursor = db_object.query(FacadeContent.REQUEST_GET_CONTENT_ITEM, (content_item_id,))
+
+        result_set = cursor.fetchall()
 
         if result_set:
             return Entity({'title': result_set[0][0],

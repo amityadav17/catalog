@@ -319,6 +319,9 @@ class ContentListResource(object):
         # Extract the 'body' from the request
         entity = Entity(req.context['body'])
 
+        if not req.context['body']:
+            raise ServiceException('CONTENT_EMPTY_BODY', "No data provided for update.")
+
         Content.update_content_item(content_item_id, entity)
 
         # Retrieve the updated content information

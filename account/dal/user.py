@@ -1,5 +1,5 @@
 from datetime import datetime
-from libservice.db.db import mycursor, mydb
+from libservice.db.db import db_object
 from libservice.base.entity import Entity
 
 
@@ -26,14 +26,14 @@ class FacadeUser:
         # Make sure all pending values are initialized
         entity.replace_all_none_by_empty()
 
-        mycursor.execute(FacadeUser.REQUEST_INSERT_USER_AUTH, (entity['uuid'],
-                                                               entity['login'],
-                                                               entity['password'],))
-        mycursor.execute(FacadeUser.REQUEST_INSERT_USER_INFO, (entity['uuid'],
-                                                               entity['firstname'],
-                                                               entity['lastname'],
-                                                               entity['email'],))
-        mydb.commit()
+        db_object.query(FacadeUser.REQUEST_INSERT_USER_AUTH, (entity['uuid'],
+                                                              entity['login'],
+                                                              entity['password'],))
+        db_object.query(FacadeUser.REQUEST_INSERT_USER_INFO, (entity['uuid'],
+                                                              entity['firstname'],
+                                                              entity['lastname'],
+                                                              entity['email'],))
+        db_object.commit_query()
 
     #########################################################################################################
 
@@ -50,10 +50,9 @@ class FacadeUser:
         :return: False if not found.
         """
 
-        mycursor.execute(FacadeUser.REQUEST_EXIST_USER_BY_LOGIN, (login,))
+        cursor = db_object.query(FacadeUser.REQUEST_EXIST_USER_BY_LOGIN, (login,))
 
-        result_set = mycursor.fetchall()
-        print("Result_set : ")
+        result_set = cursor.fetchall()
         print(result_set)
         return result_set
 
@@ -79,8 +78,9 @@ class FacadeUser:
                     firstname: The first name of the user [String]
                     lastname: The last name of the user [String]
         """
-        mycursor.execute(FacadeUser.REQUEST_GET_USER_BY_LOGIN, (login,))
-        result_set = mycursor.fetchall()
+
+        cursor = db_object.query(FacadeUser.REQUEST_GET_USER_BY_LOGIN, (login,))
+        result_set = cursor.fetchall()
 
         if result_set:
             return Entity({'login': result_set[0][0],

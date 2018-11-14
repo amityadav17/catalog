@@ -3,8 +3,8 @@
 """
 @apiDefine HeaderRequired
 
-@apiHeader {object} Content-Type application/json
-@apiHeader {object} Auth-Token Auth-Token required for authorization. Run session api to get Auth-Token
+@apiHeader {string} Content-Type application/json
+@apiHeader {string} Auth-Token Auth-Token required for authorization. Run session api to get Auth-Token
 
 @apiHeaderExample {json} Header-Example:
     {
@@ -28,13 +28,13 @@
 @apiGroup Content
 @api {get} /content/list Get Content Tree
 @apiName Get Content Tree
-@apiDescription Request the whole content tree
+@apiDescription Request the whole content tree. Admin/User/Guest Session authorization token(Auth-Token) required to perform this action.
 
 @apiPermission admin, user, guest
 
 @apiUse HeaderRequired
 
-@apiParam {String} [search] URL query parameter to do a full text search based on database.
+@apiParam {String} [search] URL query parameter to do a full text search based on database e.g. "../content/list?search="Star".
 
 @apiError {Object} DATA_RETRIEVAL_FAILED Failed to retrieve content data
 @apiError {Object} METHOD_NOT_ALLOWED Method not allowed
@@ -83,7 +83,7 @@
 @apiGroup Content
 @api {post} /content/list/ Add Content to Content Tree
 @apiName Add Content to Content Tree
-@apiDescription Add media content item information to content Tree
+@apiDescription Add media content item information to content Tree. Admin Session authorization token(Auth-Token) required to perform this action. 
 
 @apiPermission admin
 
@@ -94,6 +94,15 @@
 @apiParam {String} director The director of the media.
 @apiParam {String} [idbm_score] The imdb score of the content.
 @apiParam {String} [popularity] The popularity of the content.
+
+@apiParamExample {json} Request-Body-Example:
+    { 
+        "title": "The title of the content",
+        "director": "Director-Name",
+        "genre":  ["Genre-1","Genre-2"],
+        "idbm_score": "6.4",
+        "popularity": "70.2"
+    }
 
 @apiError {Object} CONTENT_DATABASE_QUERY_FAIL Unable to add content.
 @apiError {Object} INVALID_REQUEST_FORMAT JSON request body doesn't match expected format.
@@ -112,7 +121,7 @@
 @apiGroup Content
 @api {PUT} /content/list/{content_id} Update Content item
 @apiName Update Content information for the provided content id
-@apiDescription Update media content item information with the provided content id 
+@apiDescription Update media content item information with the provided content id. Admin Session authorization token(Auth-Token) required to perform this action. 
 
 @apiPermission admin
 
@@ -123,6 +132,13 @@
 @apiParam {String} [director] The director of the media.
 @apiParam {String} [idbm_score] The imdb score of the content.
 @apiParam {String} [popularity] The popularity of the content.
+
+@apiParamExample {json} Request-Body-Example:
+    { 
+        "title": "The new title of the content",
+        "director": "New Director-Name",
+        "popularity": "68.4"
+    }
 
 @apiError {Object} CONTENT_DATABASE_QUERY_FAIL Unable to update content.
 @apiError {Object} CONTENT_ITEM_UPDATE_FAIL A content item id needs to be specified
@@ -151,7 +167,7 @@
 @apiGroup Content
 @api {DELETE} /content/list/{content_id} Delete Content item
 @apiName Delete Content information for the provided content id
-@apiDescription Delete media content item information with the provided content id 
+@apiDescription Delete media content item information with the provided content id. Admin Session authorization token(Auth-Token) required to perform this action. 
 
 @apiPermission admin
 
@@ -165,10 +181,10 @@
 @apiError {Object} INVALID_CONTENT_ID 'Content id not found. Invalid content id.
 @apiError {Object} ADMIN_CONTENT_DATABASE_QUERY_FAIL Unable to delete content.
 
-@apiSuccess (204) {Object[]} Updated-Content-Item Updated Content item information
+@apiSuccess (204) Updated-Content-Item Updated Content item information
 
 
-@apiSuccessExample {json} Success-Response:
+@apiSuccessExample Success-Response:
     {
     }
 """
@@ -178,7 +194,7 @@
 @apiGroup USER
 @api {post} /user Add User account
 @apiName Add a new user account
-@apiDescription Add a new user account
+@apiDescription Add a new user account. Admin Session authorization token(Auth-Token) required to perform this action.
 
 @apiPermission admin
 
@@ -188,6 +204,14 @@
 @apiParam {String} [lastname] The user’s last name.
 @apiParam {String} email The email address associated with the user’s account.
 @apiParam {String} password The password associated with the user’s account. Must Have minimum 8 charcters, 1 Capital Letter and Numeric value
+
+@apiParamExample {json} Request-Body-Example:
+    { 
+        "firstname": "fname",
+        "lastname": "lname",
+        "email":  "test_user@email.com",
+        "password": "Test12345@"
+    }
 
 @apiError {Object} USER_CREATION_FAIL Unable to load the user information that has just been created.
 @apiError {Object} INVALID_REQUEST_FORMAT JSON request body doesn't match expected format.
@@ -204,9 +228,9 @@
 
 @apiSuccessExample {json} Success-Response:
     {
-        "lastname": "lname123",
-        "firstname": "fname123",
-        "login": "test12345@email.com"
+        "lastname": "lname",
+        "firstname": "fname",
+        "login": "test_user@email.com"
     }
 """
 
@@ -214,11 +238,23 @@
 
 @apiGroup USER
 @api {post} /session User session management
-@apiName User session management
+@apiName User session management. 
 @apiDescription Create a User session. If email and password are both empty then user will be logged in as guest and if not they will be logged in as user. Session is valid for 24 hrs
 
 @apiParam {String} email The email address associated with the user’s account.
 @apiParam {String} password The password associated with the user’s account.
+
+@apiParamExample {json} Request-Body-Example (USER):
+    { 
+        "email":  "test_user@email.com",
+        "password": "Test12345@"
+    }
+
+@apiParamExample {json} Request-Body-Example (GUEST):
+    { 
+        "email":  "",
+        "password": ""
+    }
 
 @apiError {Object} USER_INVALID_CREDENTIALS_TOKEN Invalid credentials. Token generation failed.
 @apiError {Object} INVALID_REQUEST_FORMAT JSON request body doesn't match expected format.
@@ -254,6 +290,14 @@
 @apiParam {String} email The email address associated with the admin user’s account.
 @apiParam {String} password The password associated with the admin user’s account. Must Have minimum 8 charcters, 1 Capital Letter and Numeric value
 
+@apiParamExample {json} Request-Body-Example:
+    { 
+        "firstname": "admin_fname",
+        "lastname": "admin_lname",
+        "email":  "admin_user@email.com",
+        "password": "Test12345@"
+    }
+
 @apiError {Object} ADMIN_CREATION_EMAIL_FAIL Login/Email required..
 @apiError {Object} INVALID_REQUEST_FORMAT JSON request body doesn't match expected format.
 @apiError {Object} INVALID_REQUEST_JSON Cannot validate JSON request body.
@@ -271,9 +315,9 @@
 
 @apiSuccessExample {json} Success-Response:
     {
-        "lastname": "lname123",
-        "firstname": "fname123",
-        "login": "test12345@email.com"
+        "lastname": "admin_lname",
+        "firstname": "admin_fname",
+        "login": "admin_user@email.com"
     }
 """
 
@@ -286,6 +330,12 @@
 
 @apiParam {String} email The email address associated with the user’s account.
 @apiParam {String} password The password associated with the user’s account.
+
+@apiParamExample {json} Request-Body-Example:
+    { 
+        "email":  "admin_user@email.com",
+        "password": "Test12345@"
+    }
 
 @apiError {Object} ADMIN_USER_INVALID_CREDENTIALS_TOKEN Invalid credentials. Token generation failed.
 @apiError {Object} INVALID_REQUEST_FORMAT JSON request body doesn't match expected format.

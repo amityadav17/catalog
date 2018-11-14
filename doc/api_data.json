@@ -24,7 +24,14 @@
             "description": "<p>The password associated with the user’s account.</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Body-Example:",
+          "content": "{ \n    \"email\":  \"admin_user@email.com\",\n    \"password\": \"Test12345@\"\n}",
+          "type": "json"
+        }
+      ]
     },
     "error": {
       "fields": {
@@ -165,7 +172,14 @@
             "description": "<p>The password associated with the admin user’s account. Must Have minimum 8 charcters, 1 Capital Letter and Numeric value</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Body-Example:",
+          "content": "{ \n    \"firstname\": \"admin_fname\",\n    \"lastname\": \"admin_lname\",\n    \"email\":  \"admin_user@email.com\",\n    \"password\": \"Test12345@\"\n}",
+          "type": "json"
+        }
+      ]
     },
     "error": {
       "fields": {
@@ -300,7 +314,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"lastname\": \"lname123\",\n    \"firstname\": \"fname123\",\n    \"login\": \"test12345@email.com\"\n}",
+          "content": "{\n    \"lastname\": \"admin_lname\",\n    \"firstname\": \"admin_fname\",\n    \"login\": \"admin_user@email.com\"\n}",
           "type": "json"
         }
       ]
@@ -313,14 +327,14 @@
         "Header": [
           {
             "group": "Header",
-            "type": "object",
+            "type": "string",
             "optional": false,
             "field": "Content-Type",
             "description": "<p>application/json</p>"
           },
           {
             "group": "Header",
-            "type": "object",
+            "type": "string",
             "optional": false,
             "field": "Auth-Token",
             "description": "<p>Auth-Token required for authorization. Run session api to get Auth-Token</p>"
@@ -342,7 +356,7 @@
     "url": "/content/list/",
     "title": "Add Content to Content Tree",
     "name": "Add_Content_to_Content_Tree",
-    "description": "<p>Add media content item information to content Tree</p>",
+    "description": "<p>Add media content item information to content Tree. Admin Session authorization token(Auth-Token) required to perform this action.</p>",
     "permission": [
       {
         "name": "admin"
@@ -387,7 +401,14 @@
             "description": "<p>The popularity of the content.</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Body-Example:",
+          "content": "{ \n    \"title\": \"The title of the content\",\n    \"director\": \"Director-Name\",\n    \"genre\":  [\"Genre-1\",\"Genre-2\"],\n    \"idbm_score\": \"6.4\",\n    \"popularity\": \"70.2\"\n}",
+          "type": "json"
+        }
+      ]
     },
     "error": {
       "fields": {
@@ -486,14 +507,14 @@
         "Header": [
           {
             "group": "Header",
-            "type": "object",
+            "type": "string",
             "optional": false,
             "field": "Content-Type",
             "description": "<p>application/json</p>"
           },
           {
             "group": "Header",
-            "type": "object",
+            "type": "string",
             "optional": false,
             "field": "Auth-Token",
             "description": "<p>Auth-Token required for authorization. Run session api to get Auth-Token</p>"
@@ -515,7 +536,7 @@
     "url": "/content/list/{content_id}",
     "title": "Delete Content item",
     "name": "Delete_Content_information_for_the_provided_content_id",
-    "description": "<p>Delete media content item information with the provided content id</p>",
+    "description": "<p>Delete media content item information with the provided content id. Admin Session authorization token(Auth-Token) required to perform this action.</p>",
     "permission": [
       {
         "name": "admin"
@@ -602,7 +623,6 @@
         "204": [
           {
             "group": "204",
-            "type": "Object[]",
             "optional": false,
             "field": "Updated-Content-Item",
             "description": "<p>Updated Content item information</p>"
@@ -625,14 +645,14 @@
         "Header": [
           {
             "group": "Header",
-            "type": "object",
+            "type": "string",
             "optional": false,
             "field": "Content-Type",
             "description": "<p>application/json</p>"
           },
           {
             "group": "Header",
-            "type": "object",
+            "type": "string",
             "optional": false,
             "field": "Auth-Token",
             "description": "<p>Auth-Token required for authorization. Run session api to get Auth-Token</p>"
@@ -654,7 +674,7 @@
     "url": "/content/list",
     "title": "Get Content Tree",
     "name": "Get_Content_Tree",
-    "description": "<p>Request the whole content tree</p>",
+    "description": "<p>Request the whole content tree. Admin/User/Guest Session authorization token(Auth-Token) required to perform this action.</p>",
     "permission": [
       {
         "name": "admin, user, guest"
@@ -668,7 +688,7 @@
             "type": "String",
             "optional": true,
             "field": "search",
-            "description": "<p>URL query parameter to do a full text search based on database.</p>"
+            "description": "<p>URL query parameter to do a full text search based on database e.g. &quot;../content/list?search=&quot;Star&quot;.</p>"
           }
         ]
       }
@@ -781,14 +801,14 @@
         "Header": [
           {
             "group": "Header",
-            "type": "object",
+            "type": "string",
             "optional": false,
             "field": "Content-Type",
             "description": "<p>application/json</p>"
           },
           {
             "group": "Header",
-            "type": "object",
+            "type": "string",
             "optional": false,
             "field": "Auth-Token",
             "description": "<p>Auth-Token required for authorization. Run session api to get Auth-Token</p>"
@@ -810,7 +830,7 @@
     "url": "/content/list/{content_id}",
     "title": "Update Content item",
     "name": "Update_Content_information_for_the_provided_content_id",
-    "description": "<p>Update media content item information with the provided content id</p>",
+    "description": "<p>Update media content item information with the provided content id. Admin Session authorization token(Auth-Token) required to perform this action.</p>",
     "permission": [
       {
         "name": "admin"
@@ -855,7 +875,14 @@
             "description": "<p>The popularity of the content.</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Body-Example:",
+          "content": "{ \n    \"title\": \"The new title of the content\",\n    \"director\": \"New Director-Name\",\n    \"popularity\": \"68.4\"\n}",
+          "type": "json"
+        }
+      ]
     },
     "error": {
       "fields": {
@@ -975,14 +1002,14 @@
         "Header": [
           {
             "group": "Header",
-            "type": "object",
+            "type": "string",
             "optional": false,
             "field": "Content-Type",
             "description": "<p>application/json</p>"
           },
           {
             "group": "Header",
-            "type": "object",
+            "type": "string",
             "optional": false,
             "field": "Auth-Token",
             "description": "<p>Auth-Token required for authorization. Run session api to get Auth-Token</p>"
@@ -1004,7 +1031,7 @@
     "url": "/user",
     "title": "Add User account",
     "name": "Add_a_new_user_account",
-    "description": "<p>Add a new user account</p>",
+    "description": "<p>Add a new user account. Admin Session authorization token(Auth-Token) required to perform this action.</p>",
     "permission": [
       {
         "name": "admin"
@@ -1042,7 +1069,14 @@
             "description": "<p>The password associated with the user’s account. Must Have minimum 8 charcters, 1 Capital Letter and Numeric value</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Body-Example:",
+          "content": "{ \n    \"firstname\": \"fname\",\n    \"lastname\": \"lname\",\n    \"email\":  \"test_user@email.com\",\n    \"password\": \"Test12345@\"\n}",
+          "type": "json"
+        }
+      ]
     },
     "error": {
       "fields": {
@@ -1170,7 +1204,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"lastname\": \"lname123\",\n    \"firstname\": \"fname123\",\n    \"login\": \"test12345@email.com\"\n}",
+          "content": "{\n    \"lastname\": \"lname\",\n    \"firstname\": \"fname\",\n    \"login\": \"test_user@email.com\"\n}",
           "type": "json"
         }
       ]
@@ -1183,14 +1217,14 @@
         "Header": [
           {
             "group": "Header",
-            "type": "object",
+            "type": "string",
             "optional": false,
             "field": "Content-Type",
             "description": "<p>application/json</p>"
           },
           {
             "group": "Header",
-            "type": "object",
+            "type": "string",
             "optional": false,
             "field": "Auth-Token",
             "description": "<p>Auth-Token required for authorization. Run session api to get Auth-Token</p>"
@@ -1211,7 +1245,7 @@
     "type": "post",
     "url": "/session",
     "title": "User session management",
-    "name": "User_session_management",
+    "name": "User_session_management_",
     "description": "<p>Create a User session. If email and password are both empty then user will be logged in as guest and if not they will be logged in as user. Session is valid for 24 hrs</p>",
     "parameter": {
       "fields": {
@@ -1231,7 +1265,19 @@
             "description": "<p>The password associated with the user’s account.</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Body-Example (USER):",
+          "content": "{ \n    \"email\":  \"test_user@email.com\",\n    \"password\": \"Test12345@\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request-Body-Example (GUEST):",
+          "content": "{ \n    \"email\":  \"\",\n    \"password\": \"\"\n}",
+          "type": "json"
+        }
+      ]
     },
     "error": {
       "fields": {
